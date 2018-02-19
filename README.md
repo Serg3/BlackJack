@@ -15,8 +15,9 @@ The move automatically goes to the dealer if amount of points is 21.
 The dealer takes the cards until the amount of points is higher than the player's or
 17 or higher if the player has less points.
 
-The bank is taken by the one with a large amount of points.
-The bank is divided in half with the same amount of points.
+The bank is taken by the one with a large amount of points (the player returns
+a bet of 2 to 1 in the case of win).
+The player returns his bet with the same amount of points.
 The player returns a bet of 3 to 2 in the case of Black Jack.
 
 The game ends at the choice of the player or by exhausting his money.
