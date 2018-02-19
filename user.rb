@@ -14,4 +14,8 @@ class User < Person
   def widthdraw(value)
     @money -= value
   end
+
+  def deposit(value)
+    @money += value
+  end
 end

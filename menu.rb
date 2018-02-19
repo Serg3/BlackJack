@@ -19,16 +19,16 @@ module Menu
 
   def shuffling
     p 'Shuffling...'
-    sleep(1)
+    #sleep(1)
   end
 
   def surrender
     p 'Surrender...'
-    sleep(1)
+    #sleep(1)
   end
 
   def puts_cards(person)
-    sleep(1)
+    #sleep(1)
     total = 0
     print "#{person.name}'s cards:"
     person.cards.each do |card|
@@ -36,12 +36,6 @@ module Menu
       total += card.value
     end
     p "  Total: #{total}"
-  end
-
-  def choose_action
-    p '1 - One more card.'
-    p '0 - Enough.'
-    print 'Please, make your choise: '
-    gets.chomp.to_i
+    total
   end
 end
