@@ -26,16 +26,4 @@ module Menu
     p 'Surrender...'
     #sleep(1)
   end
-
-  def puts_cards(person)
-    #sleep(1)
-    total = 0
-    print "#{person.name}'s cards:"
-    person.cards.each do |card|
-      print " #{card.name}"
-      total += card.value
-    end
-    p "  Total: #{total}"
-    total
-  end
 end

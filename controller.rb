@@ -28,20 +28,20 @@ class Controller
 
     deck.shuffle
     2.times do
-      @user_points = deck.take_card(user)
-      @dealer_points = deck.take_card(dealer)
+      @user_points = include_A?(user, deck.take_card(user))
+      @dealer_points = include_A?(dealer, deck.take_card(dealer))
     end
 
     loop do
       choise = choose_action
       break if choise == 0
-      @user_points = deck.take_card(user) if choise == 1
+      @user_points = include_A?(user, deck.take_card(user)) if choise == 1
       break if @user_points > 21
     end
 
     loop do
-      break if @dealer_points > @user_points || @user_points > 21 || @dealer_points > 19
-      @dealer_points = deck.take_card(dealer)
+      break if @dealer_points > @user_points || @user_points > 21 || @dealer_points > 20
+      @dealer_points = include_A?(dealer, deck.take_card(dealer))
     end
 
     payout(bank)
@@ -64,9 +64,21 @@ class Controller
     if user.money?
       true
     else
-      p 'Not enough monye!'
+      p 'Not enough money!'
       false
     end
+  end
+
+  def include_A?(person, points)
+    aces = person.cards.select { |card| card.value == 11 }
+    if aces.size == 1 && points > 21
+      aces.first.value = 1
+      return @deck.puts_cards(person)
+    elsif aces.size > 1
+      aces.first.value = 1
+      return @deck.puts_cards(person)
+    end
+    points
   end
 
   def choose_action

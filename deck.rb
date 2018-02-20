@@ -22,10 +22,23 @@ class Deck
   end
 
   def take_card(person)
+    #sleep(1)
     card = @cards.first
     person.cards << card
     @cards.delete(card)
     puts_cards(person)
+  end
+
+  def puts_cards(person)
+    #sleep(1)
+    total = 0
+    print "#{person.name}'s cards:"
+    person.cards.each do |card|
+      print " #{card.name}"
+      total += card.value
+    end
+    p "  Total: #{total}"
+    total
   end
 
   private
