@@ -12,8 +12,7 @@ A player can take one more card until he says "Enough"
 or the amount of points is higher than 21.
 The move automatically goes to the dealer if amount of points is 21.
 
-The dealer takes the cards until the amount of points is higher than the player's or
-17 or higher if the player has less points.
+The dealer takes the cards until the amount of points is higher than the player's.
 
 The bank is taken by the one with a large amount of points (the player returns
 a bet of 2 to 1 in the case of win).
