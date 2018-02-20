@@ -9,6 +9,11 @@ class User < Person
     value
   end
 
+  def deposit(value)
+    @money += value
+    value
+  end
+
   def money?
     return true if money > 0
     false
@@ -22,9 +27,5 @@ class User < Person
     else
       raise ArgumentError, 'Your bet is largest your balance!'
     end
-  end
-
-  def deposit(value)
-    @money += value
   end
 end

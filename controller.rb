@@ -40,10 +40,11 @@ class Controller
     end
 
     loop do
-      break if @dealer_points > @user_points || @user_points > 21
+      break if @dealer_points > @user_points || @user_points > 21 || @dealer_points > 19
       @dealer_points = deck.take_card(dealer)
     end
 
+    payout(bank)
     game if continue?
   end
 
@@ -82,5 +83,19 @@ class Controller
     print 'Please, make your choise: '
     return true if gets.chomp.to_i == 1
     false
+  end
+
+  def payout(bank)
+    if user_points > 21
+      p "Bank: 0"
+    elsif user_points == dealer_points
+      p "Bank: #{user.deposit(bank)}"
+    elsif user_points == 21
+      p "Bank: #{user.deposit((bank * 2.5).to_i)}"
+    elsif user_points > dealer_points || dealer_points > 21
+      p "Bank: #{user.deposit((bank * 2).to_i)}"
+    else
+      p "Bank: 0"
+    end
   end
 end
