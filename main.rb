@@ -8,8 +8,4 @@ require_relative 'menu'
 
 Controller.new.game
 
-#game.deck.each { |card| p "#{card.name}: #{card.value}" }
-
-#at_exit { p 'Good bye!' }
-
 p 'Good bye!'

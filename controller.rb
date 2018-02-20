@@ -15,37 +15,58 @@ class Controller
   end
 
   def game
-    user_points = 0
-    dealer_points = 0
-    user.cards = []
-    dealer.cards = []
-    deck = Deck.new
-
-    bank = user.bet(make_bet)
+    reset_vars
+    return unless balance?
+    bets(bank)
+    begin
+      bank = user.bet(make_bet)
+    rescue ArgumentError => e
+      p e.message
+      game
+    end
     bets(bank)
 
     deck.shuffle
     2.times do
-      user_points = deck.take_card(user)
-      dealer_points = deck.take_card(dealer)
+      @user_points = deck.take_card(user)
+      @dealer_points = deck.take_card(dealer)
     end
 
     loop do
       choise = choose_action
       break if choise == 0
-      user_points = deck.take_card(user) if choise == 1
-      break if user_points > 21
+      @user_points = deck.take_card(user) if choise == 1
+      break if @user_points > 21
     end
 
     loop do
-      break if dealer_points > user_points || user_points > 21
-      dealer_points = deck.take_card(dealer)
+      break if @dealer_points > @user_points || @user_points > 21
+      @dealer_points = deck.take_card(dealer)
     end
 
     game if continue?
   end
 
   private
+
+  attr_accessor :user_points, :dealer_points
+
+  def reset_vars
+    @user_points = 0
+    @dealer_points = 0
+    user.cards = []
+    dealer.cards = []
+    @deck = Deck.new
+  end
+
+  def balance?
+    if user.money?
+      true
+    else
+      p 'Not enough monye!'
+      false
+    end
+  end
 
   def choose_action
     p '1 - One more card.'

@@ -9,10 +9,19 @@ class User < Person
     value
   end
 
+  def money?
+    return true if money > 0
+    false
+  end
+
   private
 
   def widthdraw(value)
-    @money -= value
+    if value <= money
+      @money -= value
+    else
+      raise ArgumentError, 'Your bet is largest your balance!'
+    end
   end
 
   def deposit(value)
