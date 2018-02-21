@@ -21,7 +21,7 @@ module Menu
     p 'Shuffling...'
   end
 
-  def choose_action
+  def ask_card
     p '1 - One more card.'
     p '0 - Enough.'
     print 'Please, make your choise: '
@@ -29,14 +29,11 @@ module Menu
   end
 
   def puts_cards(person)
-    total = 0
     print "#{person.name}'s cards:"
     person.cards.each do |card|
       print " #{card.name}"
-      total += card.value
     end
-    p "  Total: #{total}"
-    total
+    p "  Total: #{count_points(person)}"
   end
 
   def payout

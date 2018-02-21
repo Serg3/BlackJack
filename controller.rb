@@ -17,21 +17,11 @@ class Controller
   end
 
   def game
-    begin
-      preparation
-    rescue ArgumentError => e
-      #abort e.message
-      p e.message
-      exit
-    end
+    preparation
     taking_bet
 
-    shuffling
-    deck.shuffle
-    
-    first_surrender
-    user_surrender
-    dealer_surrender
+    shuffle_deck
+    surrender
 
     count_bank(bank)
     game if continue?

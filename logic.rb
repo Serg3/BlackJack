@@ -1,6 +1,12 @@
 module Logic
   def preparation
-    raise ArgumentError, 'Your bet is largest your balance!' unless user.money?
+    begin
+      raise ArgumentError, 'Your bet is largest your balance!' unless user.money?
+    rescue ArgumentError => e
+      #abort e.message
+      p e.message
+      exit
+    end
     reset_vars
     bets
   end
@@ -28,7 +34,7 @@ module Logic
 
   def user_surrender
     loop do
-      choise = choose_action
+      choise = ask_card
       break if choise == 0
       if choise == 1
         user.put_card(take_card)
@@ -48,6 +54,12 @@ module Logic
     end
   end
 
+  def surrender
+    first_surrender
+    user_surrender
+    dealer_surrender
+  end
+
   private
 
   def reset_vars
@@ -59,19 +71,37 @@ module Logic
     @deck = Deck.new
   end
 
+  def shuffle_deck
+    shuffling
+    deck.shuffle
+  end
+
   def take_card
     @deck.take_card
   end
 
+  def count_points(person)
+    total = 0
+    person.cards.each do |card|
+      total += card.value
+    end
+    total
+  end
+
+  def change_value(person, aces)
+    puts_cards(person)
+    aces.first.value = 1
+  end
+
   def include_aces?(person)
-    points = puts_cards(person)
+    points = count_points(person)
     aces = person.cards.select { |card| card.value == 11 }
     if aces.size == 1 && points > 21
-      aces.first.value = 1
-      return puts_cards(person)
+      change_value(person, aces)
+      return count_points(person)
     elsif aces.size > 1
-      aces.first.value = 1
-      return puts_cards(person)
+      change_value(person, aces)
+      return count_points(person)
     end
     points
   end
