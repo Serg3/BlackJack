@@ -10,7 +10,7 @@ class Controller
 
   def initialize
     @user = User.new(ask_name)
-    greeting(user.name)
+    greeting
     @dealer = Person.new('Dealer')
     @deck = ''
     @bank = 0
@@ -23,7 +23,7 @@ class Controller
     shuffle_deck
     surrender
 
-    count_bank(bank)
+    payout
     game if continue?
   end
 

@@ -1,25 +1,35 @@
 module Menu
+  # initialize
+
   def ask_name
     print 'Enter your name, please: '
     gets.chomp
   end
 
-  def greeting(name)
-    p "Hello, #{name}! Let's play Black Jack!"
+  def greeting
+    p "Hello, #{user.name}! Let's play Black Jack!"
   end
+
+  # preparation
+
+  def bets
+    p "Bank: #{bank};  User: #{user.money}"
+  end
+
+  # taking_bet
 
   def make_bet
     print 'Please, make your bet: '
     gets.chomp.to_i
   end
 
-  def bets
-    p "Bank: #{bank};  User: #{user.money}"
-  end
+  # shuffle_deck
 
   def shuffling
     p 'Shuffling...'
   end
+
+  # surrender
 
   def ask_card
     p '1 - One more card.'
@@ -36,7 +46,9 @@ module Menu
     p "  Total: #{count_points(person)}"
   end
 
-  def payout
+  # payout
+
+  def puts_payout
     p "Bank for payout: #{bank}"
   end
 
