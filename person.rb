@@ -1,9 +1,16 @@
 class Person
-  attr_accessor :cards
-  attr_reader :name, :money
+  attr_reader :name, :money, :cards
 
   def initialize(name)
     @name = name
+    @cards = []
+  end
+
+  def put_card(card)
+    cards << card
+  end
+
+  def remove_cards
     @cards = []
   end
 end

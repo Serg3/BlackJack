@@ -1,7 +1,9 @@
 require_relative 'menu'
+require_relative 'logic'
 
 class Controller
   include Menu
+  include Logic
 
   attr_accessor :deck, :bank
   attr_reader :user, :dealer
@@ -9,105 +11,33 @@ class Controller
   def initialize
     @user = User.new(ask_name)
     greeting(user.name)
-    @dealer = Dealer.new('Dealer')
+    @dealer = Person.new('Dealer')
     @deck = ''
     @bank = 0
   end
 
   def game
-    reset_vars
-    return unless balance?
-    bets(bank)
     begin
-      bank = user.bet(make_bet)
+      preparation
     rescue ArgumentError => e
+      #abort e.message
       p e.message
-      game
+      exit
     end
-    bets(bank)
+    taking_bet
 
+    shuffling
     deck.shuffle
-    2.times do
-      @user_points = include_A?(user, deck.take_card(user))
-      @dealer_points = include_A?(dealer, deck.take_card(dealer))
-    end
+    
+    first_surrender
+    user_surrender
+    dealer_surrender
 
-    loop do
-      choise = choose_action
-      break if choise == 0
-      @user_points = include_A?(user, deck.take_card(user)) if choise == 1
-      break if @user_points > 21
-    end
-
-    loop do
-      break if @dealer_points > @user_points || @user_points > 21 || @dealer_points > 20
-      @dealer_points = include_A?(dealer, deck.take_card(dealer))
-    end
-
-    payout(bank)
+    count_bank(bank)
     game if continue?
   end
 
   private
 
   attr_accessor :user_points, :dealer_points
-
-  def reset_vars
-    @user_points = 0
-    @dealer_points = 0
-    user.cards = []
-    dealer.cards = []
-    @deck = Deck.new
-  end
-
-  def balance?
-    if user.money?
-      true
-    else
-      p 'Not enough money!'
-      false
-    end
-  end
-
-  def include_A?(person, points)
-    aces = person.cards.select { |card| card.value == 11 }
-    if aces.size == 1 && points > 21
-      aces.first.value = 1
-      return @deck.puts_cards(person)
-    elsif aces.size > 1
-      aces.first.value = 1
-      return @deck.puts_cards(person)
-    end
-    points
-  end
-
-  def choose_action
-    p '1 - One more card.'
-    p '0 - Enough.'
-    print 'Please, make your choise: '
-    gets.chomp.to_i
-  end
-
-  def continue?
-    p 'Do you want to continue the game?'
-    p '1 - Yes!'
-    p '0 - No.'
-    print 'Please, make your choise: '
-    return true if gets.chomp.to_i == 1
-    false
-  end
-
-  def payout(bank)
-    if user_points > 21
-      p "Bank: 0"
-    elsif user_points == dealer_points
-      p "Bank: #{user.deposit(bank)}"
-    elsif user_points == 21
-      p "Bank: #{user.deposit((bank * 2.5).to_i)}"
-    elsif user_points > dealer_points || dealer_points > 21
-      p "Bank: #{user.deposit((bank * 2).to_i)}"
-    else
-      p "Bank: 0"
-    end
-  end
 end

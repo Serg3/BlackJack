@@ -13,17 +13,42 @@ module Menu
     gets.chomp.to_i
   end
 
-  def bets(bank)
+  def bets
     p "Bank: #{bank};  User: #{user.money}"
   end
 
   def shuffling
     p 'Shuffling...'
-    #sleep(1)
   end
 
-  def surrender
-    p 'Surrender...'
-    #sleep(1)
+  def choose_action
+    p '1 - One more card.'
+    p '0 - Enough.'
+    print 'Please, make your choise: '
+    gets.chomp.to_i
+  end
+
+  def puts_cards(person)
+    total = 0
+    print "#{person.name}'s cards:"
+    person.cards.each do |card|
+      print " #{card.name}"
+      total += card.value
+    end
+    p "  Total: #{total}"
+    total
+  end
+
+  def payout
+    p "Bank for payout: #{bank}"
+  end
+
+  def continue?
+    p 'Do you want to continue the game?'
+    p '1 - Yes!'
+    p '0 - No.'
+    print 'Please, make your choise: '
+    return true if gets.chomp.to_i == 1
+    false
   end
 end

@@ -22,10 +22,7 @@ class User < Person
   private
 
   def widthdraw(value)
-    if value <= money
-      @money -= value
-    else
-      raise ArgumentError, 'Your bet is largest your balance!'
-    end
+    raise ArgumentError, 'Your bet is largest your balance!' if value > money
+    @money -= value
   end
 end
