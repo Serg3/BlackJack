@@ -19,9 +19,7 @@ class Deck
   end
 
   def take_card
-    card = cards.first
-    cards.delete(card)
-    card
+    cards.shift
   end
 
   private

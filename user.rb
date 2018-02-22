@@ -15,8 +15,7 @@ class User < Person
   end
 
   def money?
-    return true if money > 0
-    false
+    money > 0
   end
 
   private

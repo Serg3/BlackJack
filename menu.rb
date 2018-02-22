@@ -29,7 +29,7 @@ module Menu
     p 'Shuffling...'
   end
 
-  # surrender
+  # deal_cards
 
   def ask_card
     p '1 - One more card.'

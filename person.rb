@@ -8,7 +8,7 @@ class Person
     @points = 0
   end
 
-  def put_card(card)
+  def get_card(card)
     cards << card
   end
 

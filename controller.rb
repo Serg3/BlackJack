@@ -1,8 +1,6 @@
-require_relative 'menu'
 require_relative 'logic'
 
 class Controller
-  include Menu
   include Logic
 
   attr_accessor :deck, :bank
@@ -21,7 +19,7 @@ class Controller
     taking_bet
 
     shuffle_deck
-    surrender
+    deal_cards
 
     payout
     game if continue?

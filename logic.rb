@@ -1,4 +1,8 @@
+require_relative 'menu'
+
 module Logic
+  include Menu
+
   private
 
   # preparation
@@ -43,22 +47,22 @@ module Logic
     deck.shuffle
   end
 
-  # surrender
+  # deal_cards
 
-  def surrender
-    first_surrender
-    user_surrender
-    dealer_surrender
+  def deal_cards
+    first_deal
+    user_get
+    dealer_get
   end
 
-  def first_surrender
+  def first_deal
     2.times do
       cards_points(user)
       cards_points(dealer)
     end
   end
 
-  def user_surrender
+  def user_get
     loop do
       choise = ask_card
       break if choise == 0
@@ -67,7 +71,7 @@ module Logic
     end
   end
 
-  def dealer_surrender
+  def dealer_get
     loop do
       break if dealer.points > user.points || user.points > 21 || dealer.points > 20
       cards_points(dealer)
@@ -75,13 +79,9 @@ module Logic
   end
 
   def cards_points(person)
-    person.put_card(take_card)
+    person.get_card(@deck.take_card)
     person.points = include_aces?(person)
     puts_cards(person)
-  end
-
-  def take_card
-    @deck.take_card
   end
 
   def include_aces?(person)
@@ -106,7 +106,6 @@ module Logic
   end
 
   def change_value(person, aces)
-    puts_cards(person)
     aces.first.value = 1
   end
 
