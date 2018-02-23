@@ -1,90 +1,5 @@
-require_relative 'menu'
-
-module Logic
-  include Menu
-
-  private
-
-  # preparation
-
-  def preparation
-    check_money
-    reset_vars
-    bets
-  end
-
-  def check_money
-    raise ArgumentError, 'You have no money!' unless user.money?
-  rescue ArgumentError => e
-    abort e.message
-  end
-
-  def reset_vars
-    user.points = 0
-    dealer.points = 0
-    @bank = 0
-    user.remove_cards
-    dealer.remove_cards
-    @deck = Deck.new
-  end
-
-  # taking_bet
-
-  def taking_bet
-    begin
-      @bank = user.bet(make_bet)
-    rescue ArgumentError => e
-      p e.message
-      retry
-    end
-    bets
-  end
-
-  # shuffle_deck
-
-  def shuffle_deck
-    shuffling
-    deck.shuffle
-  end
-
-  # deal_cards
-
-  def deal_cards
-    first_deal
-    user_get
-    dealer_get
-  end
-
-  def first_deal
-    2.times do
-      cards_points(user)
-      cards_points(dealer)
-    end
-  end
-
-  def user_get
-    loop do
-      choise = ask_card
-      break if choise == 0
-      cards_points(user) if choise == 1
-      break if user.points > 21
-    end
-  end
-
-  def dealer_get
-    loop do
-      break if dealer.points > user.points || user.points > 21 || dealer.points > 20
-      cards_points(dealer)
-    end
-  end
-
-  def cards_points(person)
-    person.get_card(@deck.take_card)
-    person.points = include_aces?(person)
-    puts_cards(person)
-  end
-
-  def include_aces?(person)
+class Logic
+  def conversion_ace_value(person)
     points = count_points(person)
     aces = person.cards.select { |card| card.value == 11 }
     if aces.size == 1 && points > 21
@@ -97,6 +12,20 @@ module Logic
     points
   end
 
+  def count_payout(user, dealer, bank)
+    if user.points > 21
+      0
+    elsif user.points == dealer.points
+      user.deposit(bank)
+    elsif user.points == 21
+      user.deposit((bank * 2.5).to_i)
+    elsif user.points > dealer.points || dealer.points > 21
+      user.deposit((bank * 2).to_i)
+    else
+      0
+    end
+  end
+
   def count_points(person)
     total = 0
     person.cards.each do |card|
@@ -105,24 +34,9 @@ module Logic
     total
   end
 
+  private
+
   def change_value(person, aces)
     aces.first.value = 1
-  end
-
-  # payout
-
-  def payout
-    @bank = if user.points > 21
-              0
-            elsif user.points == dealer.points
-              user.deposit(bank)
-            elsif user.points == 21
-              user.deposit((bank * 2.5).to_i)
-            elsif user.points > dealer.points || dealer.points > 21
-              user.deposit((bank * 2).to_i)
-            else
-              0
-            end
-    puts_payout
   end
 end

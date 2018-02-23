@@ -1,31 +1,28 @@
 require_relative 'logic'
 
 class Controller
-  include Logic
+  attr_reader :user, :dealer, :menu, :logic, :game_play
 
-  attr_accessor :deck, :bank
-  attr_reader :user, :dealer
+  def initialize(menu, logic)
+    @game_play = ''
+    @menu = menu
+    @logic = logic
 
-  def initialize
-    @user = User.new(ask_name)
-    greeting
+    @user = User.new(menu.ask_name)
     @dealer = Person.new('Dealer')
-    @deck = ''
-    @bank = 0
+
+    menu.greeting(user.name)
   end
 
   def game
-    preparation
-    taking_bet
+    game_play = GamePlay.new(menu, logic, user, dealer)
+    game_play.preparation
+    game_play.taking_bet
 
-    shuffle_deck
-    deal_cards
+    game_play.shuffle_deck
+    game_play.deal_cards
 
-    payout
-    game if continue?
+    menu.puts_payout(game_play.payout)
+    game if menu.continue?
   end
-
-  private
-
-  attr_accessor :user_points, :dealer_points
 end
