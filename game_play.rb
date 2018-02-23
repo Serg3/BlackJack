@@ -59,6 +59,8 @@ class GamePlay
       cards_points(user)
       cards_points(dealer)
     end
+    menu.puts_cards(user, logic.count_points(user))
+    menu.puts_cards(dealer, logic.count_points(dealer))
   end
 
   def user_get_cards
@@ -66,6 +68,7 @@ class GamePlay
       choise = menu.ask_card
       break if choise == 0
       cards_points(user) if choise == 1
+      menu.puts_cards(user, logic.count_points(user))
       break if user.points > 21
     end
   end
@@ -74,12 +77,12 @@ class GamePlay
     loop do
       break if dealer.points > user.points || user.points > 21 || dealer.points > 20
       cards_points(dealer)
+      menu.puts_cards(dealer, logic.count_points(dealer))
     end
   end
 
   def cards_points(person)
     person.get_card(@deck.take_card)
     person.points = logic.conversion_ace_value(person)
-    menu.puts_cards(person, logic.count_points(person))
   end
 end
