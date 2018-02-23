@@ -7,6 +7,6 @@ require_relative 'menu'
 require_relative 'logic'
 require_relative 'game_play'
 
-Controller.new(Menu.new, Logic.new).game
+Controller.new(Menu.new, Logic.new).start
 
 p 'Good bye!'

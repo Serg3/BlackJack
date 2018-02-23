@@ -8,11 +8,17 @@ class Controller
     @menu = menu
     @logic = logic
 
-    @user = User.new(menu.ask_name)
+    @user = ''
     @dealer = Person.new('Dealer')
-
-    menu.greeting(user.name)
   end
+
+  def start
+    @user = User.new(menu.ask_name)
+    menu.greeting(user.name)
+    game
+  end
+
+  private
 
   def game
     game_play = GamePlay.new(menu, logic, user, dealer)
